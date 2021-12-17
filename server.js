@@ -2,11 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const notFound = require('./middleware/notFound')
 const errorHandler = require('./middleware/errorHandler')
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const connectDB = async () => {
   try {
   
-    await mongoose.connect('mongodb+srv://tracy161:tracy161@todolist.dgqbv.mongodb.net/TodoDatabase?retryWrites=true&w=majority');
+    await mongoose.connect(process.env.MONGO_URI);
 
     console.log('MongoDB Connected...')
   } catch (err) {
@@ -28,7 +31,7 @@ app.get('/', (req, res) => res.send('API Running'));
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
-app.use('/api/todolists', require('./routes/api/todolist'));
+app.use('/api/todos', require('./routes/api/todos'));
 
 app.use(notFound)
 app.use(errorHandler)

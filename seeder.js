@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const users = require('./data/users');
 const todoLists = require('./data/todoLists');
-const User = require('./models/UsersModel');
+const User = require('./models/UserModel');
 const TodoList = require('./models/TodoListModel');
 
 dotenv.config();
@@ -11,7 +11,7 @@ dotenv.config();
 const connectDB = async () => {
   try {
   
-    await mongoose.connect('mongodb+srv://tracy161:tracy161@todolist.dgqbv.mongodb.net/TodoDatabase?retryWrites=true&w=majority');
+    await mongoose.connect(process.env.MONGO_URI);
 
   } catch (err) {
     console.error(err.message.red.inverse);
