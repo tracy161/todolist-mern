@@ -7,7 +7,9 @@
     "start": "node server",
     "server": "nodemon server",
     "data:import": "node seeder",
-    "data:destroy": "node seeder -d"
+    "data:destroy": "node seeder -d",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Tracy Pham",
   "license": "MIT",
