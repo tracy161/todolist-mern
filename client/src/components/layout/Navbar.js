@@ -2,6 +2,7 @@ import React from 'react'
 
 const Navbar = () => {
   return (
+    <div className='main-content position-relative max-height-vh-100 h-100 border-radius-lg' >
     <nav className="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
       <div className="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
@@ -104,6 +105,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    </div>
   )
 }
 

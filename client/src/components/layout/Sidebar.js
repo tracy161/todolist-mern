@@ -3,7 +3,7 @@ import React from 'react';
 const Sidebar = () => {
   return (
     <aside
-      className='sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark'
+      className='sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark'
       id='sidenav-main'
     >
       <div className='sidenav-header'>
@@ -122,17 +122,6 @@ const Sidebar = () => {
             </a>
           </li>
         </ul>
-      </div>
-      <div className='sidenav-footer position-absolute w-100 bottom-0 '>
-        <div className='mx-3'>
-          <a
-            className='btn bg-gradient-primary mt-4 w-100'
-            href='https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree'
-            type='button'
-          >
-            Upgrade to pro
-          </a>
-        </div>
       </div>
     </aside>
   );

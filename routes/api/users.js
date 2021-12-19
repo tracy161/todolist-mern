@@ -2,45 +2,58 @@ const express = require('express');
 const router = express.Router();
 const generateToken = require('../../utils/generateToken');
 const User = require('../../models/UserModel');
-const Todo = require('../../models/TodoModel')
+const Todo = require('../../models/TodoModel');
 const auth = require('../../middleware/authMiddleware');
-//const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 
 // @route   POST api/users
 // @desc    Register a new user
 // @access  Public
-router.post('/', async (req, res) => {
-  const { name, email, password } = req.body;
-
-  try {
-    const userExists = await User.findOne({ email });
-
-    if (userExists) {
-      res.status(400).json({ errors: [{ message: 'User already exists' }] });
+router.post(
+  '/',
+  check('name', 'Name is required').notEmpty(),
+  check('email', 'Please include a valid email').isEmail(),
+  check(
+    'password',
+    'Please enter a password with 6 or more characters'
+  ).isLength({ min: 6 }),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
+    const { name, email, password } = req.body;
 
-    const user = await User.create({
-      name,
-      email,
-      password,
-    });
+    try {
+      const userExists = await User.findOne({ email });
 
-    if (user) {
-      res.status(201).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        token: generateToken(user._id),
+      if (userExists) {
+        res.status(400).json({ errors: [{ message: 'User already exists' }] });
+      }
+
+      const user = await User.create({
+        name,
+        email,
+        password,
       });
-    } else {
-      res.status(400).json({ errors: [{ message: 'Invalid user data' }] });
+
+      if (user) {
+        res.status(201).json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          token: generateToken(user._id),
+        });
+      } else {
+        res.status(400).json({ errors: [{ message: 'Invalid user data' }] });
+      }
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).send('Server error');
     }
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send('Server error');
   }
-});
+);
 
 // @route   GET api/users
 // @desc    Get all users
@@ -72,13 +85,12 @@ router.delete('/:id', auth, async (req, res) => {
 
     if (admin.isAdmin === true) {
       const user = await User.findById(req.params.id);
-     
+
       // Remove User & User's todolist
       if (user) {
-        await Todo.deleteMany({ user: req.params.id})
+        await Todo.deleteMany({ user: req.params.id });
         await user.remove();
         res.json({ message: 'User removed' });
-
       } else {
         res.status(404).json({ errors: [{ message: 'User not found' }] });
       }
@@ -131,7 +143,7 @@ router.put('/:id', auth, async (req, res) => {
       if (user) {
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email;
-        user.isAdmin = req.body.isAdmin
+        user.isAdmin = req.body.isAdmin;
 
         const updatedUser = await user.save();
 
@@ -139,7 +151,7 @@ router.put('/:id', auth, async (req, res) => {
           _id: updatedUser._id,
           name: updatedUser.name,
           email: updatedUser.email,
-          isAdmin: updatedUser.isAdmin
+          isAdmin: updatedUser.isAdmin,
         });
       } else {
         return res

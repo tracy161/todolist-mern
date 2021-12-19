@@ -7,31 +7,41 @@ const { check, validationResult } = require('express-validator');
 
 // @route   POST api/auth
 // @desc    Auth user & get token
-// @access  Public
-router.post('/', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        token: generateToken(user._id),
-      });
-    } else {
-      return res
-        .status(401)
-        .json({ errors: [{ message: 'Invalid Email of Password' }] });
+// @access  Private
+router.post(
+  '/',
+  check('email', 'Please include a valid email').isEmail(),
+  check('password', 'Password is required').exists(),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send('Server error');
+    
+    const { email, password } = req.body;
+
+    try {
+      const user = await User.findOne({ email });
+
+      if (user && (await user.matchPassword(password))) {
+        res.json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          token: generateToken(user._id),
+        });
+      } else {
+        return res
+          .status(401)
+          .json({ errors: [{ message: 'Invalid Email of Password' }] });
+      }
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).send('Server error');
+    }
   }
-});
+);
 
 // @route   GET api/auth
 // @desc    Get a user details
@@ -63,13 +73,13 @@ router.put('/', auth, async (req, res) => {
     const user = await User.findById(req.user.id);
 
     if (user) {
-      user.name = req.body.name || user.name
-      user.email = req.body.email || user.email
-      if(req.body.password) {
-        user.password = req.body.password
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      if (req.body.password) {
+        user.password = req.body.password;
       }
 
-      const updatedUser = await user.save()
+      const updatedUser = await user.save();
 
       res.json({
         _id: updatedUser._id,
@@ -86,7 +96,5 @@ router.put('/', auth, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-
-
 
 module.exports = router;
