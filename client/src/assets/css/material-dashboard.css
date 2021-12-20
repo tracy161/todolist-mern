@@ -4143,7 +4143,7 @@ textarea.form-control-lg {
     color: #794300; }
 
 .alert-danger {
-  color: #922820;
+  color: #fff;
   background-color: #fdd9d7;
   border-color: #fcc7c2; }
   .alert-danger .alert-link {
@@ -12429,6 +12429,12 @@ textarea.form-control-lg {
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+.alert-wrapper {
+  position: fixed;
+  top: 4rem;
+  right: 10rem;
+  display: inline-block;
+}
 .alert-primary {
   background-image: linear-gradient(195deg, #EC407A 0%, #D81B60 100%); }
 

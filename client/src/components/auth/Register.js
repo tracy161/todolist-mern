@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setAlert } from '../../actions/alert';
+import PropTypes from 'prop-types';
+
 import axios from 'axios';
 
-const Register = () => {
+const Register = ({ setAlert }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,7 +22,7 @@ const Register = () => {
   const onSubmit = async e => {
     e.preventDefault();
     if (password !== password2) {
-      console.log('Password do not match');
+      setAlert('Password do not match', 'danger');
     } else {
       const newUser = {
         name,
@@ -58,7 +62,7 @@ const Register = () => {
                   </p>
                 </div>
                 <div className='card-body'>
-                  <form role='form' onSubmit={e => onSubmit(e)}>
+                  <form onSubmit={e => onSubmit(e)}>
                     <div className='input-group input-group-outline mb-3'>
                       <input
                         type='text'
@@ -103,27 +107,7 @@ const Register = () => {
                         required
                       />
                     </div>
-                    <div className='form-check form-check-info text-start ps-0'>
-                      <input
-                        className='form-check-input'
-                        type='checkbox'
-                        value=''
-                        id='flexCheckDefault'
-                        checked
-                      />
-                      <label
-                        className='form-check-label'
-                        for='flexCheckDefault'
-                      >
-                        I agree the{' '}
-                        <a
-                          href='javascript:;'
-                          className='text-dark font-weight-bolder'
-                        >
-                          Terms and Conditions
-                        </a>
-                      </label>
-                    </div>
+
                     <div className='text-center'>
                       <button
                         type='submit'
@@ -139,7 +123,7 @@ const Register = () => {
                   <p className='mb-2 text-sm mx-auto'>
                     Already have an account?
                     <Link
-                      to='/login'
+                      to='/'
                       className='text-primary text-gradient font-weight-bold'
                     >
                       {' '}
@@ -156,4 +140,8 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+}
+
+export default connect(null, { setAlert })(Register);
