@@ -6,7 +6,7 @@ const auth = require('../../middleware/authMiddleware');
 const { check, validationResult } = require('express-validator');
 
 // @route   POST api/auth
-// @desc    Auth user & get token
+// @desc    Auth user & get token login
 // @access  Private
 router.post(
   '/',
