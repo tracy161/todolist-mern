@@ -1,9 +1,14 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/dashboard/Dashboard';
+import UserList from './components/dashboard/UserList';
+import Profile from './components/dashboard/Profile';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alert from './components/layout/Alert';
+import Sidebar from './components/layout/Sidebar';
+import Navbar from './components/layout/Navbar';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -12,6 +17,7 @@ import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
 // Css
 import './assets/css/material-dashboard.css';
+
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -26,10 +32,23 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Alert />
+        <PrivateRoute component={Sidebar} />
+        <PrivateRoute component={Navbar} />
         <Routes>
-          <Route exact path='register' element={<Register />} />
           <Route exact path='/' element={<Login />} />
-          <Route exact path='dashboard' element={<Dashboard />} />
+          <Route exact path='register' element={<Register />} />
+          <Route
+            path='dashboard'
+            element={<PrivateRoute component={Dashboard} />}
+          />
+          <Route
+            path='users'
+            element={<PrivateRoute component={UserList} />}
+          />
+          <Route
+            path='profile'
+            element={<PrivateRoute component={Profile} />}
+          />
         </Routes>
       </Router>
     </Provider>

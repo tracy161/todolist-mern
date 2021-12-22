@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { logout } from '../../actions/auth';
 
-const Sidebar = () => {
+const Sidebar = ({ logout }) => {
+  const values = [
+    { id: 1, name: 'Dashboard', to: '/dashboard', icon: 'dashboard' },
+    { id: 2, name: 'Users', to: '/users', icon: 'table_view' },
+    { id: 3, name: 'My Todo List', to: '/mytodos', icon: 'view_in_ar' },
+  ];
+
+  const [activeId, setActiveId] = useState(1);
+
   return (
     <aside
       className='sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark'
@@ -11,21 +23,12 @@ const Sidebar = () => {
           className='fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none'
           aria-hidden='true'
           id='iconSidenav'
-        ></i>
-        <a
-          className='navbar-brand m-0'
-          href=' https://demos.creative-tim.com/material-dashboard/pages/dashboard '
-          target='_blank'
-        >
-          {/* <img
-            src='../assets/img/logo-ct.png'
-            className='navbar-brand-img h-100'
-            alt='main_logo'
-          /> */}
+        />
+        <Link className='navbar-brand m-0' to='/dashboard'>
           <span className='ms-1 font-weight-bold text-white'>
             Material Dashboard 2
           </span>
-        </a>
+        </Link>
       </div>
       <hr className='horizontal light mt-0 mb-2' />
       <div
@@ -33,92 +36,43 @@ const Sidebar = () => {
         id='sidenav-collapse-main'
       >
         <ul className='navbar-nav'>
-          <li className='nav-item'>
-            <a
-              className='nav-link text-white active bg-gradient-primary'
-              href='../pages/dashboard.html'
-            >
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>dashboard</i>
-              </div>
-              <span className='nav-link-text ms-1'>Dashboard</span>
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a className='nav-link text-white ' href='../pages/tables.html'>
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>table_view</i>
-              </div>
-              <span className='nav-link-text ms-1'>Tables</span>
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a className='nav-link text-white ' href='../pages/billing.html'>
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>receipt_long</i>
-              </div>
-              <span className='nav-link-text ms-1'>Billing</span>
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a
-              className='nav-link text-white '
-              href='../pages/virtual-reality.html'
-            >
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>view_in_ar</i>
-              </div>
-              <span className='nav-link-text ms-1'>Virtual Reality</span>
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a className='nav-link text-white ' href='../pages/rtl.html'>
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>
-                  format_textdirection_r_to_l
-                </i>
-              </div>
-              <span className='nav-link-text ms-1'>RTL</span>
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a
-              className='nav-link text-white '
-              href='../pages/notifications.html'
-            >
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>notifications</i>
-              </div>
-              <span className='nav-link-text ms-1'>Notifications</span>
-            </a>
-          </li>
+          {values.map(item => (
+            <li className='nav-item'>
+              <Link
+                to={item.to}
+                onClick={() => setActiveId(item.id)}
+                className={
+                  activeId === item.id
+                    ? 'nav-link text-white active bg-gradient-primary'
+                    : 'nav-link text-white'
+                }
+              >
+                <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+                  <i className='material-icons opacity-10'>{item.icon}</i>
+                </div>
+                <span className='nav-link-text ms-1'>{item.name}</span>
+              </Link>
+            </li>
+          ))}
           <li className='nav-item mt-3'>
             <h6 className='ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8'>
               Account pages
             </h6>
           </li>
-          <li className='nav-item'>
-            <a className='nav-link text-white ' href='../pages/profile.html'>
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>person</i>
+          <li class='nav-item'>
+            <Link class='nav-link text-white ' to='/profile'>
+              <div class='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+                <i class='material-icons opacity-10'>person</i>
               </div>
-              <span className='nav-link-text ms-1'>Profile</span>
-            </a>
+              <span class='nav-link-text ms-1'>Profile</span>
+            </Link>
           </li>
           <li className='nav-item'>
-            <a className='nav-link text-white ' href='../pages/sign-in.html'>
+            <a className='nav-link text-white ' href='#!' onClick={logout}>
               <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>login</i>
+                <i className='material-icons opacity-10'>logout</i>
               </div>
-              <span className='nav-link-text ms-1'>Sign In</span>
-            </a>
-          </li>
-          <li className='nav-item'>
-            <a className='nav-link text-white ' href='../pages/sign-up.html'>
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>assignment</i>
-              </div>
-              <span className='nav-link-text ms-1'>Sign Up</span>
+              <span className='nav-link-text ms-1'>Sign Out</span>
             </a>
           </li>
         </ul>
@@ -127,4 +81,8 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+Sidebar.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
+
+export default connect(null, { logout })(Sidebar);

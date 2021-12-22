@@ -5,7 +5,10 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT
+  LOGOUT,
+  GET_USER_PROFILE,
+  USER_UPDATE_PROFILE,
+  USER_PROFILE_ERROR,
 } from '../actions/types';
 
 const initialState = {
@@ -28,6 +31,8 @@ function authReducer(state = initialState, action) {
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
+    case GET_USER_PROFILE:
+    case USER_UPDATE_PROFILE:
       localStorage.setItem('token', payload.token);
       return {
         ...state,
@@ -39,6 +44,7 @@ function authReducer(state = initialState, action) {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
+    case USER_PROFILE_ERROR:
       localStorage.removeItem('token');
       return {
         ...state,

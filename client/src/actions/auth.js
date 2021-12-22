@@ -8,6 +8,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  GET_USER_PROFILE,
+  USER_UPDATE_PROFILE,
+  USER_PROFILE_ERROR,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -91,7 +94,46 @@ export const login = (email, password) => async dispatch => {
   }
 };
 
-// Logout / Clear Profile
+// Logout
 export const logout = () => dispatch => {
   dispatch({ type: LOGOUT });
+};
+
+// Get Current User Details
+export const getUserDetails = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/auth/');
+
+    dispatch({
+      type: GET_USER_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: USER_PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+export const updateUserDetails = formData => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const res = await axios.put('/api/auth', formData, config);
+
+    dispatch({
+      type: USER_UPDATE_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: USER_PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
 };
