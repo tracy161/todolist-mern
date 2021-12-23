@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+//import { useNavigate } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { connect } from 'react-redux';
 import { getUserDetails, updateUserDetails } from '../../actions/auth';
@@ -16,6 +17,8 @@ const Profile = ({
     password: '',
     password2: '',
   });
+
+  //const navigate = useNavigate();
 
   // useEffect to get current profile to the state
   useEffect(() => {
@@ -44,7 +47,7 @@ const Profile = ({
     } else if (password !== password2) {
       setAlert('Password do not match', 'danger');
     } else {
-      updateUserDetails(user);
+      updateUserDetails(formData);
       setAlert('User Updated', 'success');
     }
   };
@@ -77,66 +80,64 @@ const Profile = ({
               </div>
             </div>
             <div className='row'>
-              <div className='row'>
-                <div className='col-xl-4 d-flex flex-column ms-auto me-auto ms-lg-auto'>
-                  <div className='card card-plain'>
-                    <div className='card-header'>
-                      <h4 className='font-weight-bolder'>Update User</h4>
-                      <p className='mb-0'>Update your user details</p>
-                    </div>
-                    <div className='card-body'>
-                      <form onSubmit={e => submitHandler(e)}>
-                        <div className='input-group input-group-outline mb-3'>
-                          <input
-                            type='text'
-                            placeholder='Name'
-                            className='form-control'
-                            name='name'
-                            value={name}
-                            onChange={e => onChange(e)}
-                          />
-                        </div>
-                        <div className='input-group input-group-outline mb-3'>
-                          <input
-                            type='email'
-                            placeholder='Email'
-                            className='form-control'
-                            name='email'
-                            value={email}
-                            onChange={e => onChange(e)}
-                          />
-                        </div>
-                        <div className='input-group input-group-outline mb-3'>
-                          <input
-                            type='password'
-                            placeholder='Password'
-                            className='form-control'
-                            name='password'
-                            value={password}
-                            onChange={e => onChange(e)}
-                          />
-                        </div>
-                        <div className='input-group input-group-outline mb-3'>
-                          <input
-                            type='password'
-                            placeholder='Confirm Password'
-                            className='form-control'
-                            name='password2'
-                            value={password2}
-                            onChange={e => onChange(e)}
-                          />
-                        </div>
+              <div className='col-xl-4 d-flex flex-column ms-auto me-auto ms-lg-auto'>
+                <div className='card card-plain'>
+                  <div className='card-header'>
+                    <h4 className='font-weight-bolder'>Update User</h4>
+                    <p className='mb-0'>Update your user details</p>
+                  </div>
+                  <div className='card-body'>
+                    <form onSubmit={e => submitHandler(e)}>
+                      <div className='input-group input-group-outline mb-3'>
+                        <input
+                          type='text'
+                          placeholder='Name'
+                          className='form-control'
+                          name='name'
+                          value={name}
+                          onChange={e => onChange(e)}
+                        />
+                      </div>
+                      <div className='input-group input-group-outline mb-3'>
+                        <input
+                          type='email'
+                          placeholder='Email'
+                          className='form-control'
+                          name='email'
+                          value={email}
+                          onChange={e => onChange(e)}
+                        />
+                      </div>
+                      <div className='input-group input-group-outline mb-3'>
+                        <input
+                          type='password'
+                          placeholder='Password'
+                          className='form-control'
+                          name='password'
+                          value={password}
+                          onChange={e => onChange(e)}
+                        />
+                      </div>
+                      <div className='input-group input-group-outline mb-3'>
+                        <input
+                          type='password'
+                          placeholder='Confirm Password'
+                          className='form-control'
+                          name='password2'
+                          value={password2}
+                          onChange={e => onChange(e)}
+                        />
+                      </div>
 
-                        <div className='text-center'>
-                          <button
-                            type='submit'
-                            className='btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0'
-                          >
-                            Update User
-                          </button>
-                        </div>
-                      </form>
-                    </div>
+                      <div className='text-center'>
+                        <button
+                          type='submit'
+                          className='btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0'
+                        >
+                          Update User
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -149,8 +150,8 @@ const Profile = ({
 };
 
 Profile.propTypes = {
-  createProfile: PropTypes.func.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired,
+  getUserDetails: PropTypes.func.isRequired,
+  updateUserDetails: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };

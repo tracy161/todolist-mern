@@ -1,6 +1,4 @@
 import React from 'react';
-import Sidebar from '../layout/Sidebar';
-import Navbar from '../layout/Navbar';
 
 const Dashboard = () => {
   return (
@@ -175,7 +173,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className='row mb-4'>
+          <div className='row mt-4'>
             <div className='col-lg-8 col-md-6 mb-md-0 mb-4'>
               <div className='card'>
                 <div className='card-header pb-0'>

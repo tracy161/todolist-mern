@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/dashboard/Dashboard';
 import UserList from './components/dashboard/UserList';
+import MyTodos from './components/dashboard/MyTodos';
 import Profile from './components/dashboard/Profile';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
@@ -44,6 +45,10 @@ const App = () => {
           <Route
             path='users'
             element={<PrivateRoute component={UserList} />}
+          />
+          <Route
+            path='mytodos'
+            element={<PrivateRoute component={MyTodos} />}
           />
           <Route
             path='profile'

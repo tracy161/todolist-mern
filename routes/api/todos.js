@@ -3,7 +3,7 @@ const router = express.Router();
 const Todo = require('../../models/TodoModel');
 const User = require('../../models/UserModel');
 
-// @desc    Get logged in user orders
+// @desc    Get logged in user TODO list
 // @route   GET /api/todos/mytodos
 // @access  Private
 router.get('/mytodos', auth, async (req, res) => {
@@ -94,9 +94,9 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // @route   DELETE api/todos/:id
-// @desc    Delete single todolist
+// @desc    Delete single todo
 // @access  Private
-router.put('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
     const todo = await Todo.findById(req.params.id);
 
@@ -115,8 +115,8 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
-// @desc    Get all orders
-// @route   GET /api/orders
+// @desc    Get all todos
+// @route   GET /api/todos
 // @access  Private/Admin
 router.get('/', auth, async (req, res) => {
   const admin = await User.findById(req.user.id);

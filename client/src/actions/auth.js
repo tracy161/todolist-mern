@@ -116,7 +116,7 @@ export const getUserDetails = () => async dispatch => {
   }
 };
 
-export const updateUserDetails = formData => async dispatch => {
+export const updateUserDetails = (formData) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -130,6 +130,9 @@ export const updateUserDetails = formData => async dispatch => {
       type: USER_UPDATE_PROFILE,
       payload: res.data,
     });
+
+    dispatch(loadUser());
+
   } catch (err) {
     dispatch({
       type: USER_PROFILE_ERROR,
