@@ -2,13 +2,40 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { getTodos, addTodo, deleteTodo } from '../../actions/todo';
+import {
+  getTodos,
+  addTodo,
+  deleteTodo,
+  updateTodo,
+  getTodo,
+  clearTodo
+} from '../../actions/todo';
 import { setAlert } from '../../actions/alert';
 
-const MyTodos = ({ setAlert, getTodos, addTodo, deleteTodo, todo: { todos } }) => {
+const MyTodos = ({
+  setAlert,
+  getTodos,
+  getTodo,
+  addTodo,
+  updateTodo,
+  deleteTodo,
+  clearTodo,
+  todo: { todos, todo },
+}) => {
   useEffect(() => {
     getTodos();
-  }, [getTodos])
+  }, []);
+
+  useEffect(() => {
+    if (todo !== null) {
+      setFormData(todo);
+    } else {
+      setFormData({
+        content: '',
+        status: '',
+      });
+    }
+  }, [todo]);
 
   const [formData, setFormData] = useState({
     content: '',
@@ -22,11 +49,14 @@ const MyTodos = ({ setAlert, getTodos, addTodo, deleteTodo, todo: { todos } }) =
 
   const submitHandler = e => {
     e.preventDefault();
-    if (!content || !status) {
+    if (content === '' || status === '') {
       setAlert('Please fill in all fields', 'danger');
+    } else if (todo === null) {
+      addTodo(formData);
     } else {
-      addTodo({ content, status });
+      updateTodo(formData);
     }
+    clearTodo();
   };
 
   const todolist = todos.map(todo => (
@@ -57,14 +87,18 @@ const MyTodos = ({ setAlert, getTodos, addTodo, deleteTodo, todo: { todos } }) =
       </td>
       <td className='align-middle text-center'>
         <a
-          class='btn btn-link text-danger text-gradient px-3 mb-0'
+          className='btn btn-link text-danger text-gradient px-3 mb-0'
           href='#!'
           onClick={() => deleteTodo(todo._id)}
         >
-          <i class='material-icons text-sm me-2'>delete</i>Delete
+          <i className='material-icons text-sm me-2'>delete</i>Delete
         </a>
-        <a class='btn btn-link text-dark px-3 mb-0' href='javascript:;'>
-          <i class='material-icons text-sm me-2'>edit</i>Edit
+        <a
+          className='btn btn-link text-dark px-3 mb-0'
+          href='#!'
+          onClick={() => getTodo(todo)}
+        >
+          <i className='material-icons text-sm me-2'>edit</i>Edit
         </a>
       </td>
     </tr>
@@ -181,13 +215,24 @@ const MyTodos = ({ setAlert, getTodos, addTodo, deleteTodo, todo: { todos } }) =
 MyTodos.propTypes = {
   setAlert: PropTypes.func.isRequired,
   getTodos: PropTypes.func.isRequired,
+  getTodo: PropTypes.func.isRequired,
   addTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,
-  todos: PropTypes.array.isRequired,
+  updateTodo: PropTypes.func.isRequired,
+  clearTodo: PropTypes.func.isRequired,
+  todo: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   todo: state.todo,
 });
 
-export default connect(mapStateToProps, { setAlert, getTodos, addTodo, deleteTodo })(MyTodos);
+export default connect(mapStateToProps, {
+  setAlert,
+  getTodos,
+  getTodo,
+  addTodo,
+  deleteTodo,
+  updateTodo,
+  clearTodo,
+})(MyTodos);

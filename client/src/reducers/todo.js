@@ -3,7 +3,9 @@ import {
   GET_TODO,
   TODO_ERROR,
   ADD_TODO,
+  UPDATE_TODO,
   DELETE_TODO,
+  CLEAR_TODO
 } from '../actions/types';
 
 const initialState = {
@@ -18,10 +20,15 @@ const todoReducer = (state = initialState, action) => {
 
   switch (type) {
     case GET_TODOS:
-    case GET_TODO:
       return {
         ...state,
         todos: payload,
+        loading: false,
+      };
+    case GET_TODO:
+      return {
+        ...state,
+        todo: payload,
         loading: false,
       };
     case ADD_TODO:
@@ -30,11 +37,25 @@ const todoReducer = (state = initialState, action) => {
         todos: [...state.todos, payload],
         loading: false,
       };
+    case UPDATE_TODO:
+      return {
+        ...state,
+        todos: state.todos.map(todo =>
+          todo._id === payload._id ? payload : todo
+        ),
+        loading: false,
+      };
     case DELETE_TODO:
       return {
         ...state,
         todos: state.todos.filter(todo => todo._id !== payload),
-        loading: false
+        loading: false,
+      };
+    case CLEAR_TODO:
+      return {
+        ...state, 
+        todo: null,
+        loading: false,
       }
     case TODO_ERROR:
       return {

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/dashboard/Dashboard';
 import UserList from './components/dashboard/UserList';
@@ -19,7 +19,6 @@ import setAuthToken from './utils/setAuthToken';
 // Css
 import './assets/css/material-dashboard.css';
 
-
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
@@ -32,29 +31,35 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Alert />
-        <PrivateRoute component={Sidebar} />
-        <PrivateRoute component={Navbar} />
-        <Routes>
-          <Route exact path='/' element={<Login />} />
-          <Route exact path='register' element={<Register />} />
-          <Route
-            path='dashboard'
-            element={<PrivateRoute component={Dashboard} />}
-          />
-          <Route
-            path='users'
-            element={<PrivateRoute component={UserList} />}
-          />
-          <Route
-            path='mytodos'
-            element={<PrivateRoute component={MyTodos} />}
-          />
-          <Route
-            path='profile'
-            element={<PrivateRoute component={Profile} />}
-          />
-        </Routes>
+        <Fragment>
+          <Navbar />
+          <Sidebar />
+          <Alert />
+          <Routes>
+            <Route exact path='/' element={<Login />} />
+            <Route exact path='register' element={<Register />} />
+            <Route
+              exact
+              path='dashboard'
+              element={<PrivateRoute component={Dashboard} />}
+            />
+            <Route
+              exact
+              path='users'
+              element={<PrivateRoute component={UserList} />}
+            />
+            <Route
+              exact
+              path='mytodos'
+              element={<PrivateRoute component={MyTodos} />}
+            />
+            <Route
+              exact
+              path='profile'
+              element={<PrivateRoute component={Profile} />}
+            />
+          </Routes>
+        </Fragment>
       </Router>
     </Provider>
   );

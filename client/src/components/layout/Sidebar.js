@@ -36,8 +36,8 @@ const Sidebar = ({ logout }) => {
         id='sidenav-collapse-main'
       >
         <ul className='navbar-nav'>
-          {values.map(item => (
-            <li className='nav-item'>
+          {values.map((item, index) => (
+            <li className='nav-item' key={index}>
               <Link
                 to={item.to}
                 onClick={() => setActiveId(item.id)}
@@ -59,12 +59,12 @@ const Sidebar = ({ logout }) => {
               Account pages
             </h6>
           </li>
-          <li class='nav-item'>
-            <Link class='nav-link text-white ' to='/profile'>
-              <div class='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i class='material-icons opacity-10'>person</i>
+          <li className='nav-item'>
+            <Link className='nav-link text-white ' to='/profile'>
+              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+                <i className='material-icons opacity-10'>person</i>
               </div>
-              <span class='nav-link-text ms-1'>Profile</span>
+              <span className='nav-link-text ms-1'>Profile</span>
             </Link>
           </li>
           <li className='nav-item'>

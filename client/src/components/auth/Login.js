@@ -20,9 +20,9 @@ const Login = ({ login, isAuthenticated }) => {
     login(email, password);
   };
 
-  // Redirect if logged in
+  // Navigate if logged in
   if (isAuthenticated) {
-    return <Navigate to='/dashboard' />;
+    return <Navigate exact to='/dashboard' />;
   }
 
   return (
@@ -44,11 +44,7 @@ const Login = ({ login, isAuthenticated }) => {
                 </div>
               </div>
               <div className='card-body'>
-                <form
-                  role='form'
-                  className='text-start'
-                  onSubmit={e => onSubmit(e)}
-                >
+                <form className='text-start' onSubmit={e => onSubmit(e)}>
                   <div className='input-group input-group-outline my-3'>
                     <input
                       type='email'
@@ -117,7 +113,7 @@ Login.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, { login })(Login);

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-//import { useNavigate } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { connect } from 'react-redux';
 import { getUserDetails, updateUserDetails } from '../../actions/auth';
@@ -18,10 +17,8 @@ const Profile = ({
     password2: '',
   });
 
-  //const navigate = useNavigate();
-
   // useEffect to get current profile to the state
-  useEffect(() => {
+  const getUsers = () => {
     if (!user) getUserDetails();
 
     if (!loading && user) {
@@ -33,7 +30,11 @@ const Profile = ({
       // set local state with the profileData
       setFormData(profileData);
     }
-  }, [loading, getUserDetails, user]);
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   const { name, email, password, password2 } = formData;
 
@@ -61,15 +62,7 @@ const Profile = ({
           </div>
           <div className='card card-body mx-3 mx-md-4 mt-n6'>
             <div className='row gx-4 mb-2'>
-              <div className='col-auto'>
-                <div className='avatar avatar-xl position-relative'>
-                  <img
-                    src='../assets/img/bruce-mars.jpg'
-                    alt='profile_image'
-                    className='w-100 border-radius-lg shadow-sm'
-                  />
-                </div>
-              </div>
+              <div className='col-auto'></div>
               <div className='col-auto my-auto'>
                 <div className='h-100'>
                   <h5 className='mb-1'>Richard Davis</h5>
