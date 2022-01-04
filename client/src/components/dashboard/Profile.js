@@ -57,6 +57,7 @@ const Profile = ({
     <>
       <div className='main-content position-relative max-height-vh-100 h-100 border-radius-lg'>
         <div className='container-fluid px-2 px-md-4'>
+          <h4 className='font-weight-bolder p-3 mb-4'>Profile</h4>
           <div className='page-header profile min-height-300 border-radius-xl mt-4'>
             <span className='mask  bg-gradient-primary  opacity-6'></span>
           </div>
@@ -65,9 +66,9 @@ const Profile = ({
               <div className='col-auto'></div>
               <div className='col-auto my-auto'>
                 <div className='h-100'>
-                  <h5 className='mb-1'>Richard Davis</h5>
+                  <h5 className='mb-1'>{user.name}</h5>
                   <p className='mb-0 font-weight-normal text-sm'>
-                    CEO / Co-Founder
+                    {user.email}
                   </p>
                 </div>
               </div>

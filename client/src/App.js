@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Dashboard from './components/dashboard/Dashboard';
-import UserList from './components/dashboard/UserList';
+import Dashboard from './components/dashboard/DashboardAdmin';
+import UserList from './components/dashboard/UserListAdmin';
 import MyTodos from './components/dashboard/MyTodos';
 import Profile from './components/dashboard/Profile';
 import Register from './components/auth/Register';
@@ -32,31 +32,49 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Fragment>
-          <Navbar />
-          <Sidebar />
           <Alert />
           <Routes>
             <Route exact path='/' element={<Login />} />
-            <Route exact path='register' element={<Register />} />
+            <Route path='register' element={<Register />} />
             <Route
-              exact
               path='dashboard'
-              element={<PrivateRoute component={Dashboard} />}
+              element={
+                <>
+                  <PrivateRoute component={Navbar} />
+                  <PrivateRoute component={Sidebar} />
+                  <PrivateRoute component={Dashboard} />
+                </>
+              }
             />
             <Route
-              exact
               path='users'
-              element={<PrivateRoute component={UserList} />}
+              element={
+                <>
+                  <PrivateRoute component={Navbar} />
+                  <PrivateRoute component={Sidebar} />
+                  <PrivateRoute component={UserList} />
+                </>
+              }
             />
             <Route
-              exact
               path='mytodos'
-              element={<PrivateRoute component={MyTodos} />}
+              element={
+                <>
+                  <PrivateRoute component={Navbar} />
+                  <PrivateRoute component={Sidebar} />
+                  <PrivateRoute component={MyTodos} />
+                </>
+              }
             />
             <Route
-              exact
               path='profile'
-              element={<PrivateRoute component={Profile} />}
+              element={
+                <>
+                  <PrivateRoute component={Navbar} />
+                  <PrivateRoute component={Sidebar} />
+                  <PrivateRoute component={Profile} />
+                </>
+              }
             />
           </Routes>
         </Fragment>

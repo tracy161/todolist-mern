@@ -15,7 +15,7 @@ const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
   loading: true,
-  user: null,
+  user: {},
 };
 
 function authReducer(state = initialState, action) {
@@ -51,6 +51,7 @@ function authReducer(state = initialState, action) {
         token: null,
         isAuthenticated: false,
         loading: false,
+        user: {},
       };
     default:
       return state;

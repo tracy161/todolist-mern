@@ -8,7 +8,7 @@ import {
   deleteTodo,
   updateTodo,
   getTodo,
-  clearTodo
+  clearTodo,
 } from '../../actions/todo';
 import { setAlert } from '../../actions/alert';
 
@@ -56,8 +56,12 @@ const MyTodos = ({
     } else {
       updateTodo(formData);
     }
-    clearTodo();
+    clearAll();
   };
+
+  const clearAll = () => {
+    clearTodo();
+  }
 
   const todolist = todos.map(todo => (
     <tr key={todo._id}>
@@ -169,9 +173,7 @@ const MyTodos = ({
                 </div>
               </div>
             </div>
-          </div>
-          <div className='row'>
-            <div className='col-12'>
+            <div className='col-7'>
               <div className='card mt-7'>
                 <div className='card-header p-0 position-relative mt-n4 mx-3 z-index-2'>
                   <div className='bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3'>

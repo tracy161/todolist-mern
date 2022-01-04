@@ -44,10 +44,10 @@ export const getTodoById = todoId => async dispatch => {
   }
 };
 
-// Set Current Todo
+// Get Current Todo
 export const getTodo = todo => async dispatch => {
   dispatch({ type: GET_TODO, payload: todo });
-}
+};
 
 // Add Todo
 export const addTodo = formData => async dispatch => {
@@ -127,6 +127,8 @@ export const deleteTodo = id => async dispatch => {
 };
 
 // Clear Current Todo
-export const clearTodo = () => async dispatch =>  {
+export const clearTodo = () => async dispatch => {
   dispatch({ type: CLEAR_TODO });
-}
+};
+
+

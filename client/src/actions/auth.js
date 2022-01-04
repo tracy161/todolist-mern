@@ -11,6 +11,7 @@ import {
   GET_USER_PROFILE,
   USER_UPDATE_PROFILE,
   USER_PROFILE_ERROR,
+  CLEAR_TODO
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 

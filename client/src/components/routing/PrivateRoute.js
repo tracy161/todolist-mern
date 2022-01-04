@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const PrivateRoute = ({ component: Component, auth: { isAuthenticated } }) => {
-  if (isAuthenticated) return <Component />;
-
-  return <Navigate to='/' />;
+  if (isAuthenticated) {
+    return <Component />;
+  } else {
+    return <Navigate to='/' />;
+  }
 };
 
 PrivateRoute.propTypes = {

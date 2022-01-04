@@ -4,14 +4,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
-const Sidebar = ({ logout }) => {
+const Sidebar = ({ logout, auth: { user } }) => {
   const values = [
     { id: 1, name: 'Dashboard', to: '/dashboard', icon: 'dashboard' },
     { id: 2, name: 'Users', to: '/users', icon: 'table_view' },
     { id: 3, name: 'My Todo List', to: '/mytodos', icon: 'view_in_ar' },
+    { id: 4, name: 'Profile', to: '/profile', icon: 'person' },
   ];
 
   const [activeId, setActiveId] = useState(1);
+  const [activeUserId, setActiveUserId] = useState(3);
 
   return (
     <aside
@@ -36,36 +38,47 @@ const Sidebar = ({ logout }) => {
         id='sidenav-collapse-main'
       >
         <ul className='navbar-nav'>
-          {values.map((item, index) => (
-            <li className='nav-item' key={index}>
-              <Link
-                to={item.to}
-                onClick={() => setActiveId(item.id)}
-                className={
-                  activeId === item.id
-                    ? 'nav-link text-white active bg-gradient-primary'
-                    : 'nav-link text-white'
-                }
-              >
-                <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                  <i className='material-icons opacity-10'>{item.icon}</i>
-                </div>
-                <span className='nav-link-text ms-1'>{item.name}</span>
-              </Link>
-            </li>
-          ))}
+          {user.isAdmin === false
+            ? values.slice(2).map((item, index) => (
+                <li className='nav-item' key={index}>
+                  <Link
+                    to={item.to}
+                    onClick={() => setActiveUserId(item.id)}
+                    className={
+                      activeUserId === item.id
+                        ? 'nav-link text-white active bg-gradient-primary'
+                        : 'nav-link text-white'
+                    }
+                  >
+                    <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+                      <i className='material-icons opacity-10'>{item.icon}</i>
+                    </div>
+                    <span className='nav-link-text ms-1'>{item.name}</span>
+                  </Link>
+                </li>
+              ))
+            : values.map((item, index) => (
+                <li className='nav-item' key={index}>
+                  <Link
+                    to={item.to}
+                    onClick={() => setActiveId(item.id)}
+                    className={
+                      activeId === item.id
+                        ? 'nav-link text-white active bg-gradient-primary'
+                        : 'nav-link text-white'
+                    }
+                  >
+                    <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+                      <i className='material-icons opacity-10'>{item.icon}</i>
+                    </div>
+                    <span className='nav-link-text ms-1'>{item.name}</span>
+                  </Link>
+                </li>
+              ))}
           <li className='nav-item mt-3'>
             <h6 className='ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8'>
-              Account pages
+              Account page
             </h6>
-          </li>
-          <li className='nav-item'>
-            <Link className='nav-link text-white ' to='/profile'>
-              <div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-                <i className='material-icons opacity-10'>person</i>
-              </div>
-              <span className='nav-link-text ms-1'>Profile</span>
-            </Link>
           </li>
           <li className='nav-item'>
             <a className='nav-link text-white ' href='#!' onClick={logout}>
@@ -83,6 +96,11 @@ const Sidebar = ({ logout }) => {
 
 Sidebar.propTypes = {
   logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
-export default connect(null, { logout })(Sidebar);
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { logout })(Sidebar);
