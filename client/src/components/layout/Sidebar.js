@@ -39,8 +39,8 @@ const Sidebar = ({ logout, auth: { user } }) => {
       >
         <ul className='navbar-nav'>
           {user.isAdmin === false
-            ? values.slice(2).map((item, index) => (
-                <li className='nav-item' key={index}>
+            ? values.slice(2).map((item) => (
+                <li className='nav-item' key={item.id}>
                   <Link
                     to={item.to}
                     onClick={() => setActiveUserId(item.id)}
@@ -57,8 +57,8 @@ const Sidebar = ({ logout, auth: { user } }) => {
                   </Link>
                 </li>
               ))
-            : values.map((item, index) => (
-                <li className='nav-item' key={index}>
+            : values.map((item) => (
+                <li className='nav-item' key={item.id}>
                   <Link
                     to={item.to}
                     onClick={() => setActiveId(item.id)}

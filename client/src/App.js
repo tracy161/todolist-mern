@@ -10,6 +10,7 @@ import Alert from './components/layout/Alert';
 import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import PrivateRoute from './components/routing/PrivateRoute';
+import AdminRoute from './components/routing/AdminRoute';
 
 // Redux
 import { Provider } from 'react-redux';

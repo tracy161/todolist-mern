@@ -3,7 +3,9 @@ import {
   GET_ALL_TODOS,
   GET_ALL_USERS,
   USERS_ERROR,
-  CLEAR_USERS
+  FILTER_TODOS,
+  FILTER_USERS,
+  CLEAR_FILTER,
 } from '../actions/types';
 
 const initialState = {
@@ -11,6 +13,8 @@ const initialState = {
   user: null,
   todos: [],
   loading: true,
+  filteredTodo: [],
+  filteredUser: [],
   error: {},
 };
 
@@ -35,11 +39,35 @@ function usersReducer(state = initialState, action) {
         users: state.users.filter(user => user._id !== payload),
         todos: state.todos.filter(todo => todo.user._id !== payload),
         loading: false,
-      }
+      };
     case USERS_ERROR:
       return {
         ...state,
         error: payload,
+        loading: false,
+      };
+    case FILTER_TODOS:
+      return {
+        ...state,
+        filteredTodo: state.todos.filter(({ content, user: { name } }) => {
+          const testString = `${content}${name}`.toLowerCase();
+          return testString.includes(payload.toLowerCase());
+        }),
+        loading: false,
+      };
+    case FILTER_USERS:
+      return {
+        ...state,
+        filteredUser: state.users.filter(({ name, email }) => {
+          const testString = `${name}${email}`.toLowerCase();
+          return testString.includes(payload.toLowerCase());
+        }),
+        loading: false,
+      };
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        filtered: [],
         loading: false,
       };
     default:

@@ -8,6 +8,7 @@ import {
   UPDATE_TODO,
   DELETE_TODO,
   CLEAR_TODO,
+  FILTER_TODOS_USER
 } from './types';
 
 // Get Todos
@@ -129,6 +130,21 @@ export const deleteTodo = id => async dispatch => {
 // Clear Current Todo
 export const clearTodo = () => async dispatch => {
   dispatch({ type: CLEAR_TODO });
+};
+
+// Filter todos
+export const filterTodos = text => dispatch => {
+  try {
+    dispatch({
+      type: FILTER_TODOS_USER,
+      payload: text,
+    });
+  } catch (err) {
+    dispatch({
+      type: TODO_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
 };
 
 

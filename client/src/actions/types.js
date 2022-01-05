@@ -27,4 +27,9 @@ export const GET_ALL_USERS = 'GET_ALL_USERS';
 export const USERS_ERROR = 'USERS_ERROR';
 export const GET_ALL_TODOS = 'GET_ALL_TODOS';
 export const DELETE_USER = 'DELETE_USER';
-export const CLEAR_USERS = 'CLEAR_USERS'
+export const CLEAR_USERS = 'CLEAR_USERS';
+
+export const FILTER_TODOS = 'FILTER_TODOS';
+export const FILTER_USERS = 'FILTER_USERS';
+export const CLEAR_FILTER = 'CLEAR_FILTER';
+export const FILTER_TODOS_USER = 'FILTER_TODOS_USER';

@@ -9,7 +9,7 @@ const AdminRoute = ({ component: AdminComponent, auth: { isAuthenticated, user }
   return <Navigate to='/' />;
 };
 
-PrivateRoute.propTypes = {
+AdminRoute.propTypes = {
   auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => ({

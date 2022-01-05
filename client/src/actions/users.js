@@ -2,9 +2,12 @@ import axios from 'axios';
 import { setAlert } from './alert';
 import {
   DELETE_USER,
+  FILTER_TODOS,
+  FILTER_USERS,
   GET_ALL_TODOS,
   GET_ALL_USERS,
   USERS_ERROR,
+  CLEAR_FILTER
 } from './types';
 
 // Get all users by admin
@@ -58,4 +61,39 @@ export const deleteUser = id => async dispatch => {
       payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
+};
+
+// Filter todos
+export const filterTodos = text => dispatch => {
+  try {
+    dispatch({
+      type: FILTER_TODOS,
+      payload: text,
+    });
+  } catch (err) {
+    dispatch({
+      type: USERS_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Filter users
+export const filterUsers = text => async dispatch => {
+  try {
+    dispatch({
+      type: FILTER_USERS,
+      payload: text,
+    });
+  } catch (err) {
+    dispatch({
+      type: USERS_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Clear Filter
+export const clearFilter = () => async dispatch => {
+  dispatch({ type: CLEAR_FILTER });
 };

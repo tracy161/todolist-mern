@@ -5,12 +5,14 @@ import {
   ADD_TODO,
   UPDATE_TODO,
   DELETE_TODO,
-  CLEAR_TODO
+  CLEAR_TODO,
+  FILTER_TODOS_USER
 } from '../actions/types';
 
 const initialState = {
   todos: [],
   todo: null,
+  filtered: [],
   loading: true,
   error: {},
 };
@@ -34,7 +36,7 @@ const todoReducer = (state = initialState, action) => {
     case ADD_TODO:
       return {
         ...state,
-        todos: [...state.todos, payload],
+        todos: [payload, ...state.todos,],
         loading: false,
       };
     case UPDATE_TODO:
@@ -51,6 +53,15 @@ const todoReducer = (state = initialState, action) => {
         todos: state.todos.filter(todo => todo._id !== payload),
         loading: false,
       };
+    case FILTER_TODOS_USER:
+      return {
+        ...state,
+        filtered: state.todos.filter(({ content }) => {
+          const testString = `${content}`.toLowerCase();
+          return testString.includes(payload.toLowerCase());
+        }),
+        loading: false,
+      }
     case CLEAR_TODO:
       return {
         ...state, 

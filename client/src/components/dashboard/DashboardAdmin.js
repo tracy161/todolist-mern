@@ -1,16 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
-import { getAllTodos, getAllUsers } from '../../actions/users';
+import {
+  getAllTodos,
+  getAllUsers,
+  filterTodos,
+  filterUsers,
+  clearFilter,
+} from '../../actions/users';
+import Pagination from '../layout/Pagination';
 
-const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
+const Dashboard = ({
+  getAllTodos,
+  getAllUsers,
+  filterTodos,
+  filterUsers,
+  clearFilter,
+  user: { users, todos, filteredTodo, filteredUser },
+}) => {
   useEffect(() => {
     getAllUsers();
     getAllTodos();
   }, []);
 
-  const todoListTable = todos.map(todo => (
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(2);
+
+  const indexofLastItem = currentPage * itemsPerPage;
+  const indexofFirstItem = indexofLastItem - itemsPerPage;
+  const currentTodos = todos.slice(indexofFirstItem, indexofLastItem);
+  const currentUsers = users.slice(indexofFirstItem, indexofLastItem);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
+  // Table
+  const todoListTable = currentTodos.map(todo => (
     <tr key={todo._id}>
       <td>
         <div className='d-flex px-3 py-1'>
@@ -43,7 +69,40 @@ const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
     </tr>
   ));
 
-  const usersTable = users.map(user => (
+  const filteredTodosTable = filteredTodo.map(todo => (
+    <tr key={todo._id}>
+      <td>
+        <div className='d-flex px-3 py-1'>
+          <div></div>
+          <div className='d-flex flex-column justify-content-center'>
+            <h6 className='mb-0 text-sm'>{todo.content}</h6>
+          </div>
+        </div>
+      </td>
+      <td className='align-middle text-center text-sm'>
+        <span className='text-xs font-weight-bold'>{todo.user.name}</span>
+      </td>
+      <td className='align-middle text-center text-sm'>
+        <span
+          className={
+            todo.status === 'Complete'
+              ? 'badge badge-sm bg-gradient-success'
+              : 'badge badge-sm bg-gradient-secondary'
+          }
+        >
+          {todo.status}
+        </span>
+      </td>
+      <td className='align-middle text-center text-sm'>
+        <span className='text-xs font-weight-bold'>
+          {' '}
+          <Moment format='DD/MM/YYYY'>{todo.createdAt}</Moment>
+        </span>
+      </td>
+    </tr>
+  ));
+
+  const usersTable = currentUsers.map(user => (
     <tr key={user._id}>
       <td>
         <div className='d-flex px-3 py-1'>
@@ -58,13 +117,32 @@ const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
       <td className='align-middle text-center'>
         <span className='text-secondary text-xs font-weight-bold'>
           <Moment format='DD/MM/YYYY'>{user.createdAt}</Moment>
-          {'  '}
-          {user.createdAt}
         </span>
       </td>
     </tr>
   ));
 
+  const filteredUsersTable = filteredUser.map(user => (
+    <tr key={user._id}>
+      <td>
+        <div className='d-flex px-3 py-1'>
+          <div className='d-flex flex-column justify-content-center'>
+            <h6 className='mb-0 text-sm'>{user.name}</h6>
+          </div>
+        </div>
+      </td>
+      <td className='align-middle text-center'>
+        <span className='text-xs font-weight-bold'>{user.email}</span>
+      </td>
+      <td className='align-middle text-center'>
+        <span className='text-secondary text-xs font-weight-bold'>
+          <Moment format='DD/MM/YYYY'>{user.createdAt}</Moment>
+        </span>
+      </td>
+    </tr>
+  ));
+
+  // Count total tasks
   const completeTasks = todos.filter(todo => todo.status === 'Complete');
 
   const curr = new Date(); // get current date
@@ -86,6 +164,20 @@ const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
   const increaseUsers = users.filter(
     user => Date.parse(user.createdAt) > Date.parse(firstday)
   );
+
+  // Filter
+  const [searchTermTodo, setSearchTermTodo] = useState('');
+  const [searchTermUser, setSearchTermUser] = useState('');
+
+  const onChangeTodo = e => {
+    setSearchTermTodo(e.target.value);
+    filterTodos(e.target.value);
+  };
+
+  const onChangeUser = e => {
+    setSearchTermUser(e.target.value);
+    filterUsers(e.target.value);
+  };
 
   return (
     <>
@@ -165,17 +257,21 @@ const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
 
           <div className='row mt-4'>
             <div className='col-lg-6 col-md-6 mb-md-0 mb-4'>
-              <div className='card'>
+              <div className='card h-100'>
                 <div className='card-header pb-0'>
                   <div className='row'>
                     <div className='col-lg-6 col-7'>
                       <h6>Todo List Table</h6>
                     </div>
-                    <div class='col-lg-6 col-5 my-auto text-end'>
+                    <div className='col-lg-6 col-5 my-auto text-end'>
                       <div className='ms-md-auto pe-md-3 d-flex align-items-center'>
                         <div className='input-group input-group-outline'>
-                          <label className='form-label'>Type here...</label>
-                          <input type='text' className='form-control' />
+                          <input
+                            type='text'
+                            placeholder='Search Item or Username...'
+                            className='form-control'
+                            onChange={e => onChangeTodo(e)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -200,10 +296,19 @@ const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
                           </th>
                         </tr>
                       </thead>
-                      <tbody>{todoListTable}</tbody>
+                      <tbody>
+                        {searchTermTodo !== ''
+                          ? filteredTodosTable
+                          : todoListTable}
+                      </tbody>
                     </table>
                   </div>
                 </div>
+                <Pagination
+                  itemsPerPage={itemsPerPage}
+                  totalItems={todos.length}
+                  paginate={paginate}
+                />
               </div>
             </div>
             <div className='col-lg-6 col-md-6'>
@@ -213,11 +318,15 @@ const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
                     <div className='col-lg-6 col-7'>
                       <h6>Users List Table</h6>
                     </div>
-                    <div class='col-lg-6 col-5 my-auto text-end'>
+                    <div className='col-lg-6 col-5 my-auto text-end'>
                       <div className='ms-md-auto pe-md-3 d-flex align-items-center'>
                         <div className='input-group input-group-outline'>
-                          <label className='form-label'>Type here...</label>
-                          <input type='text' className='form-control' />
+                          <input
+                            type='text'
+                            placeholder='Search Username or Email...'
+                            className='form-control'
+                            onChange={e => onChangeUser(e)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -239,10 +348,19 @@ const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
                           </th>
                         </tr>
                       </thead>
-                      <tbody>{usersTable}</tbody>
+                      <tbody>
+                        {searchTermUser !== ''
+                          ? filteredUsersTable
+                          : usersTable}
+                      </tbody>
                     </table>
                   </div>
                 </div>
+                <Pagination
+                  itemsPerPage={itemsPerPage}
+                  totalItems={users.length}
+                  paginate={paginate}
+                />
               </div>
             </div>
           </div>
@@ -255,6 +373,9 @@ const Dashboard = ({ getAllTodos, getAllUsers, user: { users, todos } }) => {
 Dashboard.propTypes = {
   getAllUsers: PropTypes.func.isRequired,
   getAllTodos: PropTypes.func.isRequired,
+  filterTodos: PropTypes.func.isRequired,
+  filterUsers: PropTypes.func.isRequired,
+  clearFilter: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 
@@ -262,6 +383,10 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-export default connect(mapStateToProps, { getAllUsers, getAllTodos })(
-  Dashboard
-);
+export default connect(mapStateToProps, {
+  getAllUsers,
+  getAllTodos,
+  filterTodos,
+  filterUsers,
+  clearFilter,
+})(Dashboard);

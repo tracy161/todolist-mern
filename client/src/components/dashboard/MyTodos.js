@@ -9,6 +9,7 @@ import {
   updateTodo,
   getTodo,
   clearTodo,
+  filterTodos,
 } from '../../actions/todo';
 import { setAlert } from '../../actions/alert';
 
@@ -20,7 +21,8 @@ const MyTodos = ({
   updateTodo,
   deleteTodo,
   clearTodo,
-  todo: { todos, todo },
+  filterTodos,
+  todo: { todos, todo, filtered },
 }) => {
   useEffect(() => {
     getTodos();
@@ -61,7 +63,7 @@ const MyTodos = ({
 
   const clearAll = () => {
     clearTodo();
-  }
+  };
 
   const todolist = todos.map(todo => (
     <tr key={todo._id}>
@@ -107,6 +109,58 @@ const MyTodos = ({
       </td>
     </tr>
   ));
+
+  const filteredTodoTable = filtered.map(todo => (
+    <tr key={todo._id}>
+      <td>
+        <div className='d-flex px-3 py-1'>
+          <div className='d-flex flex-column justify-content-center'>
+            <h6 className='mb-0 text-sm'>{todo.content}</h6>
+            <p className='text-xs text-secondary mb-0'>john@creative-tim.com</p>
+          </div>
+        </div>
+      </td>
+      <td className='align-middle text-center text-sm'>
+        <span
+          className={
+            todo.status === 'Complete'
+              ? 'badge badge-sm bg-gradient-success'
+              : 'badge badge-sm bg-gradient-secondary'
+          }
+        >
+          {todo.status}
+        </span>
+      </td>
+      <td className='align-middle text-center'>
+        <span className='text-secondary text-xs font-weight-bold'>
+          <Moment format='DD/MM/YYYY'>{todo.createdAt}</Moment>
+        </span>
+      </td>
+      <td className='align-middle text-center'>
+        <a
+          className='btn btn-link text-danger text-gradient px-3 mb-0'
+          href='#!'
+          onClick={() => deleteTodo(todo._id)}
+        >
+          <i className='material-icons text-sm me-2'>delete</i>Delete
+        </a>
+        <a
+          className='btn btn-link text-dark px-3 mb-0'
+          href='#!'
+          onClick={() => getTodo(todo)}
+        >
+          <i className='material-icons text-sm me-2'>edit</i>Edit
+        </a>
+      </td>
+    </tr>
+  ));
+
+  const [searchTermTodo, setSearchTermTodo] = useState('');
+
+  const onChangeTodo = e => {
+    setSearchTermTodo(e.target.value);
+    filterTodos(e.target.value);
+  };
 
   return (
     <>
@@ -177,9 +231,26 @@ const MyTodos = ({
               <div className='card mt-7'>
                 <div className='card-header p-0 position-relative mt-n4 mx-3 z-index-2'>
                   <div className='bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3'>
-                    <h6 className='text-white text-capitalize ps-3'>
-                      Todo List table
-                    </h6>
+                    <div className='row'>
+                      <div className='col-lg-6 col-7'>
+                        <h6 className='text-white text-capitalize ps-3'>
+                          Todo List Table
+                        </h6>
+                      </div>
+                      <div className='col-lg-6 col-5 my-auto text-end'>
+                        <div className='ms-md-auto pe-md-3 d-flex align-items-center'>
+                          <div className='input-group input-group-outline'>
+                            <input
+                              type='text'
+                              style={formControl}
+                              placeholder='Search Item...'
+                              className='form-control'
+                              onChange={e => onChangeTodo(e)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className='card-body px-0 pb-2'>
@@ -201,7 +272,11 @@ const MyTodos = ({
                           </th>
                         </tr>
                       </thead>
-                      <tbody>{todolist}</tbody>
+                      <tbody>
+                        {searchTermTodo !== ''
+                          ? filteredTodoTable
+                          : todolist}
+                      </tbody>
                     </table>
                   </div>
                 </div>
@@ -214,6 +289,10 @@ const MyTodos = ({
   );
 };
 
+const formControl = {
+  color: 'white',
+};
+
 MyTodos.propTypes = {
   setAlert: PropTypes.func.isRequired,
   getTodos: PropTypes.func.isRequired,
@@ -222,6 +301,7 @@ MyTodos.propTypes = {
   deleteTodo: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
   clearTodo: PropTypes.func.isRequired,
+  filterTodos: PropTypes.func.isRequired,
   todo: PropTypes.object.isRequired,
 };
 
@@ -237,4 +317,5 @@ export default connect(mapStateToProps, {
   deleteTodo,
   updateTodo,
   clearTodo,
+  filterTodos,
 })(MyTodos);
