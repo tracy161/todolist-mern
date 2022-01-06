@@ -28,7 +28,7 @@ const Sidebar = ({ logout, auth: { user } }) => {
         />
         <Link className='navbar-brand m-0' to='/dashboard'>
           <span className='ms-1 font-weight-bold text-white'>
-            Material Dashboard 2
+            Todo List App
           </span>
         </Link>
       </div>
@@ -39,7 +39,7 @@ const Sidebar = ({ logout, auth: { user } }) => {
       >
         <ul className='navbar-nav'>
           {user.isAdmin === false
-            ? values.slice(2).map((item) => (
+            ? values.slice(2).map(item => (
                 <li className='nav-item' key={item.id}>
                   <Link
                     to={item.to}
@@ -57,7 +57,7 @@ const Sidebar = ({ logout, auth: { user } }) => {
                   </Link>
                 </li>
               ))
-            : values.map((item) => (
+            : values.map(item => (
                 <li className='nav-item' key={item.id}>
                   <Link
                     to={item.to}

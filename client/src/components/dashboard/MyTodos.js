@@ -11,6 +11,7 @@ import {
   clearTodo,
   filterTodos,
 } from '../../actions/todo';
+import PaginationTodos from '../layout/paginations/PaginationTodos';
 import { setAlert } from '../../actions/alert';
 
 const MyTodos = ({
@@ -65,13 +66,22 @@ const MyTodos = ({
     clearTodo();
   };
 
-  const todolist = todos.map(todo => (
+  // Pagination
+  const [currentPageTodos, setCurrentPageTodos] = useState(1);
+  const [itemsPerPageTodos] = useState(10);
+
+  const indexofLastTodos = currentPageTodos * itemsPerPageTodos;
+  const indexofFirstTodos = indexofLastTodos - itemsPerPageTodos;
+  const currentTodos = todos.slice(indexofFirstTodos, indexofLastTodos);
+
+  const paginateTodos = pageNumber => setCurrentPageTodos(pageNumber);
+
+  const todolist = currentTodos.map(todo => (
     <tr key={todo._id}>
       <td>
         <div className='d-flex px-3 py-1'>
           <div className='d-flex flex-column justify-content-center'>
             <h6 className='mb-0 text-sm'>{todo.content}</h6>
-            <p className='text-xs text-secondary mb-0'>john@creative-tim.com</p>
           </div>
         </div>
       </td>
@@ -116,7 +126,6 @@ const MyTodos = ({
         <div className='d-flex px-3 py-1'>
           <div className='d-flex flex-column justify-content-center'>
             <h6 className='mb-0 text-sm'>{todo.content}</h6>
-            <p className='text-xs text-secondary mb-0'>john@creative-tim.com</p>
           </div>
         </div>
       </td>
@@ -253,33 +262,42 @@ const MyTodos = ({
                     </div>
                   </div>
                 </div>
-                <div className='card-body px-0 pb-2'>
-                  <div className='table-responsive p-0'>
-                    <table className='table align-items-center mb-0'>
-                      <thead>
-                        <tr>
-                          <th className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>
-                            Items
-                          </th>
-                          <th className='text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>
-                            Status
-                          </th>
-                          <th className='text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>
-                            Date Created
-                          </th>
-                          <th className='text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>
-                            Action
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {searchTermTodo !== ''
-                          ? filteredTodoTable
-                          : todolist}
-                      </tbody>
-                    </table>
+                {todos.length === 0 ? (
+                  <h5 className='d-flex justify-content-center py-5'>
+                    Please add a todo!
+                  </h5>
+                ) : (
+                  <div className='card-body px-0 pb-2'>
+                    <div className='table-responsive p-0'>
+                      <table className='table align-items-center mb-0'>
+                        <thead>
+                          <tr>
+                            <th className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>
+                              Items
+                            </th>
+                            <th className='text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>
+                              Status
+                            </th>
+                            <th className='text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>
+                              Date Created
+                            </th>
+                            <th className='text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>
+                              Action
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {searchTermTodo !== '' ? filteredTodoTable : todolist}
+                        </tbody>
+                      </table>
+                    </div>
+                    <PaginationTodos
+                      itemsPerPageTodos={itemsPerPageTodos}
+                      totalItems={todos.length}
+                      paginate={paginateTodos}
+                    />
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

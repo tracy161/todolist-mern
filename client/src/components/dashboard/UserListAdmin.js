@@ -9,6 +9,8 @@ import {
   filterTodos,
   filterUsers,
 } from '../../actions/users';
+import PaginationTodos from '../layout/paginations/PaginationTodos';
+import PaginationUsers from '../layout/paginations/PaginationUsers';
 
 const UserList = ({
   getAllUsers,
@@ -23,7 +25,26 @@ const UserList = ({
     getAllTodos();
   }, []);
 
-  const usersTable = users.map(user => (
+  // Pagination
+  const [currentPageTodos, setCurrentPageTodos] = useState(1);
+  const [itemsPerPageTodos] = useState(10);
+
+  const indexofLastTodos = currentPageTodos * itemsPerPageTodos;
+  const indexofFirstTodos = indexofLastTodos - itemsPerPageTodos;
+  const currentTodos = todos.slice(indexofFirstTodos, indexofLastTodos);
+
+  const paginateTodos = pageNumber => setCurrentPageTodos(pageNumber);
+
+  const [currentPageUsers, setCurrentPageUsers] = useState(1);
+  const [itemsPerPageUsers] = useState(10);
+
+  const indexofLastUsers = currentPageUsers * itemsPerPageUsers;
+  const indexofFirstUsers = indexofLastUsers - itemsPerPageUsers;
+  const currentUsers = users.slice(indexofFirstUsers, indexofLastUsers);
+
+  const paginateUsers = pageNumber => setCurrentPageUsers(pageNumber);
+
+  const usersTable = currentUsers.map(user => (
     <tr key={user._id}>
       <td>
         <div className='d-flex px-3 py-1'>
@@ -40,14 +61,18 @@ const UserList = ({
         </span>
       </td>
       <td className='align-middle text-center'>
-        <a
-          className='btn btn-link text-danger text-gradient px-3 mb-0'
-          href='#!'
-          onClick={() => deleteUser(user._id)}
-        >
-          <i className='material-icons text-sm me-2'>delete</i>
-          Delete
-        </a>
+        {user.isAdmin === false ? (
+          <a
+            className='btn btn-link text-danger text-gradient px-3 mb-0'
+            href='#!'
+            onClick={() => deleteUser(user._id)}
+          >
+            <i className='material-icons text-sm me-2'>delete</i>
+            Delete
+          </a>
+        ) : (
+          ''
+        )}
       </td>
     </tr>
   ));
@@ -69,19 +94,23 @@ const UserList = ({
         </span>
       </td>
       <td className='align-middle text-center'>
-        <a
-          className='btn btn-link text-danger text-gradient px-3 mb-0'
-          href='#!'
-          onClick={() => deleteUser(user._id)}
-        >
-          <i className='material-icons text-sm me-2'>delete</i>
-          Delete
-        </a>
+        {user.isAdmin === false ? (
+          <a
+            className='btn btn-link text-danger text-gradient px-3 mb-0'
+            href='#!'
+            onClick={() => deleteUser(user._id)}
+          >
+            <i className='material-icons text-sm me-2'>delete</i>
+            Delete
+          </a>
+        ) : (
+          ''
+        )}
       </td>
     </tr>
   ));
 
-  const todoListTable = todos.map(todo => (
+  const todoListTable = currentTodos.map(todo => (
     <tr key={todo._id}>
       <td>
         <div className='d-flex px-3 py-1'>
@@ -216,6 +245,11 @@ const UserList = ({
                     </table>
                   </div>
                 </div>
+                <PaginationUsers
+                  itemsPerPageUsers={itemsPerPageUsers}
+                  totalItems={users.length}
+                  paginate={paginateUsers}
+                />
               </div>
             </div>
             <div className='col-7'>
@@ -271,6 +305,11 @@ const UserList = ({
                     </table>
                   </div>
                 </div>
+                <PaginationTodos
+                  itemsPerPageTodos={itemsPerPageTodos}
+                  totalItems={todos.length}
+                  paginate={paginateTodos}
+                />
               </div>
             </div>
           </div>

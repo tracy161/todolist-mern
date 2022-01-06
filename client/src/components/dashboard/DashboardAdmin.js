@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
@@ -9,7 +9,8 @@ import {
   filterUsers,
   clearFilter,
 } from '../../actions/users';
-import Pagination from '../layout/Pagination';
+import PaginationTodos from '../layout/paginations/PaginationTodos';
+import PaginationUsers from '../layout/paginations/PaginationUsers';
 
 const Dashboard = ({
   getAllTodos,
@@ -25,16 +26,25 @@ const Dashboard = ({
   }, []);
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(2);
+  const [currentPageTodos, setCurrentPageTodos] = useState(1);
+  const [itemsPerPageTodos] = useState(10);
 
-  const indexofLastItem = currentPage * itemsPerPage;
-  const indexofFirstItem = indexofLastItem - itemsPerPage;
-  const currentTodos = todos.slice(indexofFirstItem, indexofLastItem);
-  const currentUsers = users.slice(indexofFirstItem, indexofLastItem);
+  const indexofLastTodos = currentPageTodos * itemsPerPageTodos;
+  const indexofFirstTodos = indexofLastTodos - itemsPerPageTodos;
+  const currentTodos = todos.slice(indexofFirstTodos, indexofLastTodos);
+  
+  const paginateTodos = pageNumber => setCurrentPageTodos(pageNumber);
 
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
+  const [currentPageUsers, setCurrentPageUsers] = useState(1);
+  const [itemsPerPageUsers] = useState(10);
+
+  const indexofLastUsers = currentPageUsers * itemsPerPageUsers;
+  const indexofFirstUsers = indexofLastUsers - itemsPerPageUsers;
+  const currentUsers = users.slice(indexofFirstUsers, indexofLastUsers);
+  
+  const paginateUsers = pageNumber => setCurrentPageUsers(pageNumber);
+  
   // Table
   const todoListTable = currentTodos.map(todo => (
     <tr key={todo._id}>
@@ -142,7 +152,7 @@ const Dashboard = ({
     </tr>
   ));
 
-  // Count total tasks
+  // Count total tasks and users
   const completeTasks = todos.filter(todo => todo.status === 'Complete');
 
   const curr = new Date(); // get current date
@@ -257,7 +267,7 @@ const Dashboard = ({
 
           <div className='row mt-4'>
             <div className='col-lg-6 col-md-6 mb-md-0 mb-4'>
-              <div className='card h-100'>
+              <div className='card'>
                 <div className='card-header pb-0'>
                   <div className='row'>
                     <div className='col-lg-6 col-7'>
@@ -304,15 +314,15 @@ const Dashboard = ({
                     </table>
                   </div>
                 </div>
-                <Pagination
-                  itemsPerPage={itemsPerPage}
+                <PaginationTodos
+                  itemsPerPageTodos={itemsPerPageTodos}
                   totalItems={todos.length}
-                  paginate={paginate}
+                  paginate={paginateTodos}
                 />
               </div>
             </div>
             <div className='col-lg-6 col-md-6'>
-              <div className='card h-100'>
+              <div className='card'>
                 <div className='card-header pb-0'>
                   <div className='row'>
                     <div className='col-lg-6 col-7'>
@@ -356,10 +366,10 @@ const Dashboard = ({
                     </table>
                   </div>
                 </div>
-                <Pagination
-                  itemsPerPage={itemsPerPage}
+                <PaginationUsers
+                  itemsPerPageUsers={itemsPerPageUsers}
                   totalItems={users.length}
-                  paginate={paginate}
+                  paginate={paginateUsers}
                 />
               </div>
             </div>
