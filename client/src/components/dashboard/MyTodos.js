@@ -13,6 +13,7 @@ import {
 } from '../../actions/todo';
 import PaginationTodos from '../layout/paginations/PaginationTodos';
 import { setAlert } from '../../actions/alert';
+import Spinner from '../layout/Spinner';
 
 const MyTodos = ({
   setAlert,
@@ -23,7 +24,7 @@ const MyTodos = ({
   deleteTodo,
   clearTodo,
   filterTodos,
-  todo: { todos, todo, filtered },
+  todo: { todos, todo, filtered, loading },
 }) => {
   useEffect(() => {
     getTodos();
@@ -262,7 +263,7 @@ const MyTodos = ({
                     </div>
                   </div>
                 </div>
-                {todos.length === 0 ? (
+                {todos.length === 0 && !loading ? (
                   <h5 className='d-flex justify-content-center py-5'>
                     Please add a todo!
                   </h5>
@@ -287,7 +288,7 @@ const MyTodos = ({
                           </tr>
                         </thead>
                         <tbody>
-                          {searchTermTodo !== '' ? filteredTodoTable : todolist}
+                          {todos !== null && !loading ? (searchTermTodo !== '' ? filteredTodoTable : todolist) : <Spinner />}
                         </tbody>
                       </table>
                     </div>

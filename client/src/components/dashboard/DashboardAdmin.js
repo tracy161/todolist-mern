@@ -27,7 +27,7 @@ const Dashboard = ({
 
   // Pagination
   const [currentPageTodos, setCurrentPageTodos] = useState(1);
-  const [itemsPerPageTodos] = useState(10);
+  const [itemsPerPageTodos] = useState(9);
 
   const indexofLastTodos = currentPageTodos * itemsPerPageTodos;
   const indexofFirstTodos = indexofLastTodos - itemsPerPageTodos;

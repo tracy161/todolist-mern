@@ -6,7 +6,7 @@ import {
   UPDATE_TODO,
   DELETE_TODO,
   CLEAR_TODO,
-  FILTER_TODOS_USER
+  FILTER_TODOS_USER,
 } from '../actions/types';
 
 const initialState = {
@@ -24,7 +24,7 @@ const todoReducer = (state = initialState, action) => {
     case GET_TODOS:
       return {
         ...state,
-        todos: payload,
+        todos: payload.sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1),
         loading: false,
       };
     case GET_TODO:
@@ -36,7 +36,7 @@ const todoReducer = (state = initialState, action) => {
     case ADD_TODO:
       return {
         ...state,
-        todos: [payload, ...state.todos,],
+        todos: [payload, ...state.todos],
         loading: false,
       };
     case UPDATE_TODO:
@@ -61,13 +61,13 @@ const todoReducer = (state = initialState, action) => {
           return testString.includes(payload.toLowerCase());
         }),
         loading: false,
-      }
+      };
     case CLEAR_TODO:
       return {
-        ...state, 
+        ...state,
         todo: null,
         loading: false,
-      }
+      };
     case TODO_ERROR:
       return {
         ...state,

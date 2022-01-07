@@ -30,7 +30,7 @@ function usersReducer(state = initialState, action) {
     case GET_ALL_TODOS:
       return {
         ...state,
-        todos: payload,
+        todos: payload.sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1),
         loading: false,
       };
     case DELETE_USER:
