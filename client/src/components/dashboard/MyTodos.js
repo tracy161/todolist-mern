@@ -57,8 +57,10 @@ const MyTodos = ({
       setAlert('Please fill in all fields', 'danger');
     } else if (todo === null) {
       addTodo(formData);
+      setFormData({ content: '', status: '' });
     } else {
       updateTodo(formData);
+      setFormData({ content: '', status: '' });
     }
     clearAll();
   };
@@ -287,9 +289,21 @@ const MyTodos = ({
                             </th>
                           </tr>
                         </thead>
-                        <tbody>
-                          {todos !== null && !loading ? (searchTermTodo !== '' ? filteredTodoTable : todolist) : <Spinner />}
-                        </tbody>
+                        {todos !== null && !loading ? (
+                          <tbody>
+                            {searchTermTodo !== ''
+                              ? filteredTodoTable
+                              : todolist}
+                          </tbody>
+                        ) : (
+                          <tbody>
+                            <tr>
+                              <td>
+                                <Spinner />
+                              </td>
+                            </tr>
+                          </tbody>
+                        )}
                       </table>
                     </div>
                     <PaginationTodos
