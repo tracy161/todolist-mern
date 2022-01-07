@@ -11,6 +11,7 @@ import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import PrivateRoute from './components/routing/PrivateRoute';
 import NotFound from './components/routing/NotFound';
+import Footer from './components/layout/Footer';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -43,6 +44,7 @@ const App = () => {
                 <PrivateRoute component={Navbar} />
                 <PrivateRoute component={Sidebar} />
                 <PrivateRoute component={Dashboard} />
+                <PrivateRoute component={Footer} />
               </>
             }
           />
@@ -53,6 +55,7 @@ const App = () => {
                 <PrivateRoute component={Navbar} />
                 <PrivateRoute component={Sidebar} />
                 <PrivateRoute component={UserList} />
+                <PrivateRoute component={Footer} />
               </>
             }
           />
@@ -63,6 +66,7 @@ const App = () => {
                 <PrivateRoute component={Navbar} />
                 <PrivateRoute component={Sidebar} />
                 <PrivateRoute component={MyTodos} />
+                <PrivateRoute component={Footer} />
               </>
             }
           />
@@ -73,6 +77,7 @@ const App = () => {
                 <PrivateRoute component={Navbar} />
                 <PrivateRoute component={Sidebar} />
                 <PrivateRoute component={Profile} />
+                <PrivateRoute component={Footer} />
               </>
             }
           />

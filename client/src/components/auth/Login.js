@@ -42,7 +42,23 @@ const Login = ({ login, auth: { isAuthenticated, user } }) => {
                   <h4 className='text-white font-weight-bolder text-center mt-2 mb-0'>
                     Sign in
                   </h4>
-                  <div className='row mt-3'></div>
+                  <div className='row mt-1 px-3'>
+                    <h6 className='text-white font-weight-bolder text-center'>
+                      Test Accounts
+                    </h6>
+                    <div className='col-lg-6 text-white'>
+                      <small className='font-weight-bolder'>Admin Account</small><br/>
+                      <small>Email: admin@example.com</small>
+                      <br />
+                      <small>Pass: 123456</small>
+                    </div>
+                    <div className='col-lg-6 text-white'>
+                    <small className='font-weight-bolder'>User Account</small><br/>
+                      <small>Email: john@example.com</small>
+                      <br />
+                      <small>Pass: 123456</small>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className='card-body'>
@@ -105,6 +121,29 @@ const Login = ({ login, auth: { isAuthenticated, user } }) => {
           </div>
         </div>
       </div>
+      <footer
+        className='footer py-4 main-content position-absolute'
+        style={{ bottom: '0' }}
+      >
+        <div className='container-fluid'>
+          <div className='row align-items-center justify-content-center'>
+            <div className='col-lg-12 mb-lg-0 mb-4'>
+              <div className='copyright text-center text-sm text-white text-lg-start'>
+                &copy; {new Date().getFullYear()}, made with{' '}
+                <i className='fa fa-heart'></i> by {'  '}
+                <a
+                  href='#!'
+                  className='font-weight-bold text-white'
+                  target='_blank'
+                >
+                  Tracy Pham
+                </a>{' '}
+                for a better web.
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

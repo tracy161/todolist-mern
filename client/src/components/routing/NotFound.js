@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom' ;
 
 const NotFound = () => {
   return (
@@ -7,6 +8,13 @@ const NotFound = () => {
         <i className='fas fa-exclamation-triangle'> Page Not Found</i>
       </h1>
       <p className='large'>Sorry, this page does not exist</p>
+      <Link
+        className='btn bg-gradient-primary mt-4'
+        to='/'
+        type='button'
+      >
+        Back to Home
+      </Link>
     </section>
   );
 };

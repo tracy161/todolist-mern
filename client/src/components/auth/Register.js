@@ -5,7 +5,7 @@ import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
-const Register = ({ setAlert, register, auth: {isAuthenticated , user} }) => {
+const Register = ({ setAlert, register, auth: { isAuthenticated, user } }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -117,9 +117,33 @@ const Register = ({ setAlert, register, auth: {isAuthenticated , user} }) => {
                   </p>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>
+        <footer
+                className='footer py-4 position-absolute'
+                style={{ bottom: '0', 'marginLeft': '50%' }}
+              >
+                <div className='container-fluid'>
+                  <div className='row align-items-center justify-content-center'>
+                    <div className='col-lg-12 mb-lg-0 mb-4'>
+                      <div className='copyright text-center text-sm text-muted text-lg-start'>
+                        &copy; {new Date().getFullYear()}, made with{' '}
+                        <i className='fa fa-heart'></i> by {'  '}
+                        <a
+                          href='#!'
+                          className='font-weight-bold text-muted'
+                          target='_blank'
+                        >
+                          Tracy Pham
+                        </a>{' '}
+                        for a better web.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </footer>
       </div>
     </section>
   );

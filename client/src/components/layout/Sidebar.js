@@ -28,7 +28,7 @@ const Sidebar = ({ logout, auth: { user } }) => {
         />
         <Link className='navbar-brand m-0' to='/dashboard'>
           <span className='ms-1 font-weight-bold text-white'>
-            Todo List App
+            Todo List Portal
           </span>
         </Link>
       </div>
