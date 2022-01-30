@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './components/dashboard/DashboardAdmin';
 import UserList from './components/dashboard/UserListAdmin';
 import MyTodos from './components/dashboard/MyTodos';
@@ -35,7 +35,8 @@ const App = () => {
       <Router>
         <Alert />
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' exact element={<Navigate to='/login'/>} />
+          <Route index path='/login' element={<Login />} />
           <Route path='register' element={<Register />} />
           <Route
             path='dashboard'
