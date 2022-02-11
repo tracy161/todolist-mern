@@ -1,4 +1,4 @@
-# Full Stack Developer Portfolio Website Built from React.JS
+# Todo List App built by MERN STACK 
 
 Link: https://ancient-castle-24713.herokuapp.com/
 
